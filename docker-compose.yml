@@ -1,0 +1,34 @@
+version: "2"
+
+services:
+  database:
+    image: mariadb
+    container_name: 'wp-ultimate-announcements-db'
+    volumes:
+      - ./tools/docker/database:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+  
+  wordpress:
+    image: ervasive/wp-ultimate-announcements
+    container_name: 'wp-ultimate-announcements-app'
+    ports:
+      - "8080:80"
+    links: 
+      - database
+    volumes:
+      - wp-ultimate-announcements-wordpress-sync:/app
+      - wp-ultimate-announcements-plugin-sync:/app/wp-content/plugins/wp-ultimate-announcements:nocopy
+    environment:
+      PHP_DEBUGGER: xdebug
+      XDEBUG_REMOTE_CONNECT_BACK: 0
+      XDEBUG_REMOTE_HOST: "10.254.254.254"
+      
+volumes:
+  wp-ultimate-announcements-wordpress-sync:
+    external: true
+  wp-ultimate-announcements-plugin-sync:
+    external: true

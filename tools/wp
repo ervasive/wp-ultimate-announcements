@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Check if development environment is up
+if [[ ! $(docker ps -q --filter "name=wp-ultimate-announcements-app") ]]; then
+	echo "To use this command you must first start the dev environment by running: docker-sync-stack start"
+	exit 1
+fi
+
+# Handle database export/import from docker container to host directory
+if [[ "db" == "$1" && ( "export" == "$2" || "import" == "$2" ) ]]; then
+	dump_tmp_dir="../wordpress"
+	dump_stg_dir="./docker/database"
+	dump_filename=${3:-database.sql}
+
+	# Export case
+	if [[ "export" == "$2" ]] ; then
+		docker exec -u application wp-ultimate-announcements-app sh -c "wp db export --skip-extended-insert $dump_filename"
+		sleep 1
+		mv "$dump_tmp_dir/$dump_filename" "$dump_stg_dir/$dump_filename"
+	fi
+
+	# Import case
+	if [[ "import" == "$2" ]] ; then
+		if [[ -f "$dump_stg_dir/$dump_filename" ]] ; then
+			cp "$dump_stg_dir/$dump_filename" "$dump_tmp_dir/$dump_filename"
+			docker exec -u application wp-ultimate-announcements-app sh -c "wp db import $dump_filename"
+			rm "$dump_tmp_dir/$dump_filename"
+		else
+			echo "No dump file found. Exiting..."
+		fi
+	fi
+
+	exit 0
+fi
+
+# Pass other wp-cli commands directly to container
+docker exec -u application wp-ultimate-announcements-app sh -c "wp $*"

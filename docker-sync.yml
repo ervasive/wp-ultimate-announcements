@@ -1,0 +1,15 @@
+version: "2"
+
+syncs:
+  wp-ultimate-announcements-wordpress-sync:
+    src: './wordpress'
+    sync_userid: '1000'
+  wp-ultimate-announcements-plugin-sync:
+    src: './'
+    sync_userid: '1000'
+    sync_excludes_type: 'none'
+    sync_excludes:
+      - 'Name .git'
+      - 'Name node_modules'
+      - 'Name react-part'
+      - 'Name wordpress'

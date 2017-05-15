@@ -1,0 +1,21 @@
+{
+    "name": "ervasive/wp-ultimate-announcements",
+    "description": "TODO",
+    "type": "wordpress-plugin",
+    "require": {},
+    "require-dev": {
+        "phpmd/phpmd": "^2.6",
+        "10up/wp_mock": "dev-dev"
+    },
+    "license": "GPL-3",
+    "authors": [
+        {
+            "name": "ervasive",
+            "email": "ervasive@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {"WPUA\\": "src/"}
+    }
+}

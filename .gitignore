@@ -1,0 +1,23 @@
+# misc
+*.DS_Store
+.DS_Store
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.docker-sync/
+
+# Editors
+.idea
+Session.vim
+_vimrc_local.vim
+
+# Node
+node_modules/
+
+# Composer
+vendor/
+
+# Project
+wordpress/
